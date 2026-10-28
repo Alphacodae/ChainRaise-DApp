@@ -1,36 +1,45 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# ChainRaise
 
-## Getting Started
+ChainRaise is a university demonstration project for transparent, blockchain-based crowdfunding. It is intended for Sepolia test ETH and academic use; it is not production financial software.
 
-First, run the development server:
+## Stage 1 setup
+
+### Requirements
+
+- Node.js 22.10 or later (the current setup was initialized with Node.js 26.7.0)
+- npm
+- Git
+
+### Install and run
 
 ```bash
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+The Next.js App Router application is in `src/app`. Shared frontend components and browser/blockchain helpers belong in `src/components` and `src/lib` as they are implemented.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Smart contract development
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Hardhat 3 is configured in `hardhat.config.ts` with the official Mocha/ethers toolbox. It reads Solidity sources from `contracts/`, tests from `test/`, and deployment scripts from `scripts/`.
 
-## Learn More
+```bash
+npm run compile
+npm run test:contracts
+```
 
-To learn more about Next.js, take a look at the following resources:
+No contract has been implemented yet. Contract behavior and tests are planned for later stages.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+The production build uses Next.js's webpack backend (`next build --webpack`) because Turbopack's worker process exits unexpectedly in the current Windows development environment.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Environment variables
 
-## Deploy on Vercel
+Copy `.env.example` to `.env` only when local configuration is needed. Keep actual RPC credentials and deployment keys in the ignored `.env` file; never commit it or put a private key in a `NEXT_PUBLIC_` variable. The example contains placeholders, not working deployment credentials.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Current scope
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Stage 1 initializes the frontend and Solidity toolchain only. No campaign UI, contract, wallet integration, deployment or testnet transaction is included yet.
+
+## Limitations
+
+Smart contracts can enforce their programmed funding and withdrawal rules, but cannot verify that campaign descriptions are truthful or that creators deliver on their promises. This application is for a testnet academic demonstration, not for real funds.
