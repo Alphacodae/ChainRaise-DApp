@@ -21,14 +21,16 @@ The Next.js App Router application is in `src/app`. Shared frontend components a
 
 ## Smart contract development
 
-Hardhat 3 is configured in `hardhat.config.ts` with the official Mocha/ethers toolbox. It reads Solidity sources from `contracts/`, tests from `test/`, and deployment scripts from `scripts/`.
+Hardhat 3 is configured in `hardhat.config.ts` with the official Mocha/ethers toolbox. It reads Solidity sources from `contracts/`, tests from `test/`, and deployment scripts from `scripts/`. `ChainRaise.sol` supports campaigns with fixed ETH goals and deadlines, capped contributions, creator withdrawals after successful completion, and individual refunds after failed completion.
+
+Contributions that would take a campaign above its goal are rejected. Success and failure are evaluated at or after the deadline. Refunds are claimed individually, so the contract never loops over its contributors. Withdrawals and refunds update claim state before sending ETH and use a reentrancy guard.
 
 ```bash
 npm run compile
 npm run test:contracts
 ```
 
-No contract has been implemented yet. Contract behavior and tests are planned for later stages.
+The contract tests cover campaign creation and validation, contribution timing and caps, withdrawals, refunds, invalid identifiers, and reentrant or rejected ETH transfers.
 
 The production build uses Next.js's webpack backend (`next build --webpack`) because Turbopack's worker process exits unexpectedly in the current Windows development environment.
 
@@ -38,7 +40,7 @@ Copy `.env.example` to `.env` only when local configuration is needed. Keep actu
 
 ## Current scope
 
-Stage 1 initializes the frontend and Solidity toolchain only. No campaign UI, contract, wallet integration, deployment or testnet transaction is included yet.
+Stage 3 implements the Solidity contract and its local tests. It does not connect the frontend to a wallet or blockchain and does not deploy the contract.
 
 ## Limitations
 
