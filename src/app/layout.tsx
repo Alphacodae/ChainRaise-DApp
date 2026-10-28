@@ -3,8 +3,7 @@ import "./globals.css";
 
 export const metadata: Metadata = {
   title: "ChainRaise",
-  description:
-    "Empowering ideas through transparent, secure and trustless fundraising.",
+  description: "Empowering ideas through transparent, secure and trustless fundraising.",
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {

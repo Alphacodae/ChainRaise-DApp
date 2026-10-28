@@ -21,6 +21,7 @@
 !/.env.example
 /.vercel
 /.turbo/
+/.stitch-review/
 
 # TypeScript and logs
 *.tsbuildinfo
