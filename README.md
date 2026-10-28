@@ -21,7 +21,7 @@ The Next.js App Router application is in `src/app`. Shared frontend components a
 
 ## Smart contract development
 
-Hardhat 3 is configured in `hardhat.config.ts` with the official Mocha/ethers toolbox. It reads Solidity sources from `contracts/`, tests from `test/`, and deployment scripts from `scripts/`. `ChainRaise.sol` supports campaigns with fixed ETH goals and deadlines, capped contributions, creator withdrawals after successful completion, and individual refunds after failed completion.
+Hardhat 3 is configured in `hardhat.config.ts` with the official Mocha/ethers toolbox. It reads Solidity sources from `contracts/` and tests from `test/`. `scripts/` has no deployment scripts yet. `ChainRaise.sol` supports campaigns with fixed ETH goals and deadlines, capped contributions, creator withdrawals after successful completion, and individual refunds after failed completion. `campaignStatus` reports Active until the deadline, then Successful or Failed based on the final amount raised.
 
 Contributions that would take a campaign above its goal are rejected. Success and failure are evaluated at or after the deadline. Refunds are claimed individually, so the contract never loops over its contributors. Withdrawals and refunds update claim state before sending ETH and use a reentrancy guard.
 
@@ -30,7 +30,7 @@ npm run compile
 npm run test:contracts
 ```
 
-The contract tests cover campaign creation and validation, contribution timing and caps, withdrawals, refunds, invalid identifiers, and reentrant or rejected ETH transfers.
+The contract tests cover campaign creation and validation, contribution timing and caps, exact deadline outcomes, per-campaign accounting, withdrawals, refunds, invalid identifiers, reentrant calls, and rejected ETH transfers.
 
 The production build uses Next.js's webpack backend (`next build --webpack`) because Turbopack's worker process exits unexpectedly in the current Windows development environment.
 
@@ -40,7 +40,7 @@ Copy `.env.example` to `.env` only when local configuration is needed. Keep actu
 
 ## Current scope
 
-Stage 3 implements the Solidity contract and its local tests. It does not connect the frontend to a wallet or blockchain and does not deploy the contract.
+Stage 3 implements the Solidity contract and local tests. Stage 4 strengthens the status, accounting, and security regression coverage. The frontend remains a preview and is not connected to a wallet or blockchain; the contract has not been deployed.
 
 ## Limitations
 

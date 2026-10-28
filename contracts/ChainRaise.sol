@@ -4,6 +4,8 @@ pragma solidity ^0.8.28;
 /// @title ChainRaise
 /// @notice Fixed-goal ETH campaigns with creator withdrawals or contributor refunds.
 contract ChainRaise {
+    enum CampaignStatus { Active, Successful, Failed }
+
     struct Campaign {
         address creator;
         string title;
@@ -101,6 +103,13 @@ contract ChainRaise {
     function isSuccessful(uint256 campaignId) external view returns (bool) {
         Campaign storage campaign = _getCampaign(campaignId);
         return block.timestamp >= campaign.deadline && campaign.amountRaised >= campaign.fundingGoal;
+    }
+
+    /// @notice Returns Active until the deadline, then Successful or Failed by the final raised amount.
+    function campaignStatus(uint256 campaignId) external view returns (CampaignStatus) {
+        Campaign storage campaign = _getCampaign(campaignId);
+        if (block.timestamp < campaign.deadline) return CampaignStatus.Active;
+        return campaign.amountRaised >= campaign.fundingGoal ? CampaignStatus.Successful : CampaignStatus.Failed;
     }
 
     function _getCampaign(uint256 campaignId) private view returns (Campaign storage) {

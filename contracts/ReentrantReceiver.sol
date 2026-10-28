@@ -10,6 +10,9 @@ interface IChainRaise {
 /// @dev Test helper: rejects ETH and attempts a nested withdrawal from its receive hook.
 contract ReentrantReceiver {
     IChainRaise private immutable chainRaise;
+    uint256 private campaignId;
+    bool public rejectEther;
+    bool public reentrancyBlocked;
 
     constructor(address chainRaiseAddress) {
         chainRaise = IChainRaise(chainRaiseAddress);
@@ -19,16 +22,22 @@ contract ReentrantReceiver {
         chainRaise.createCampaign(title, description, fundingGoal, deadline);
     }
 
-    function contribute(uint256 campaignId) external payable {
-        chainRaise.contribute{value: msg.value}(campaignId);
+    function setRejectEther(bool shouldReject) external {
+        rejectEther = shouldReject;
     }
 
-    function attackWithdraw(uint256 campaignId) external {
-        chainRaise.withdraw(campaignId);
+    function contribute(uint256 id) external payable {
+        chainRaise.contribute{value: msg.value}(id);
+    }
+
+    function attackWithdraw(uint256 id) external {
+        campaignId = id;
+        chainRaise.withdraw(id);
     }
 
     receive() external payable {
-        chainRaise.withdraw(0);
-        revert("Reject ETH");
+        (bool success, ) = address(chainRaise).call(abi.encodeCall(IChainRaise.withdraw, (campaignId)));
+        reentrancyBlocked = !success;
+        if (rejectEther) revert("Reject ETH");
     }
 }

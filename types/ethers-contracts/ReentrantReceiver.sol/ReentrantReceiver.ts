@@ -3,32 +3,38 @@
 /* eslint-disable */
 import type { BaseContract, BigNumberish, BytesLike, FunctionFragment, Result, Interface, ContractRunner, ContractMethod, Listener } from "ethers"
 import type { TypedContractEvent, TypedDeferredTopicFilter, TypedEventLog, TypedListener, TypedContractMethod } from "../common.js"
-  
+
 
   export interface ReentrantReceiverInterface extends Interface {
-    getFunction(nameOrSignature: "attackWithdraw" | "contribute" | "createCampaign"): FunctionFragment;
+    getFunction(nameOrSignature: "attackWithdraw" | "contribute" | "createCampaign" | "reentrancyBlocked" | "rejectEther" | "setRejectEther"): FunctionFragment;
 
-    
+
 
     encodeFunctionData(functionFragment: 'attackWithdraw', values: [BigNumberish]): string;
 encodeFunctionData(functionFragment: 'contribute', values: [BigNumberish]): string;
 encodeFunctionData(functionFragment: 'createCampaign', values: [string, string, BigNumberish, BigNumberish]): string;
+encodeFunctionData(functionFragment: 'reentrancyBlocked', values?: undefined): string;
+encodeFunctionData(functionFragment: 'rejectEther', values?: undefined): string;
+encodeFunctionData(functionFragment: 'setRejectEther', values: [boolean]): string;
 
     decodeFunctionResult(functionFragment: 'attackWithdraw', data: BytesLike): Result;
 decodeFunctionResult(functionFragment: 'contribute', data: BytesLike): Result;
 decodeFunctionResult(functionFragment: 'createCampaign', data: BytesLike): Result;
+decodeFunctionResult(functionFragment: 'reentrancyBlocked', data: BytesLike): Result;
+decodeFunctionResult(functionFragment: 'rejectEther', data: BytesLike): Result;
+decodeFunctionResult(functionFragment: 'setRejectEther', data: BytesLike): Result;
   }
 
-  
+
 
   export interface ReentrantReceiver extends BaseContract {
-    
+
     connect(runner?: ContractRunner | null): ReentrantReceiver;
     waitForDeployment(): Promise<this>;
 
     interface: ReentrantReceiverInterface;
 
-    
+
   queryFilter<TCEvent extends TypedContractEvent>(
     event: TCEvent,
     fromBlockOrBlockhash?: string | number | undefined,
@@ -42,7 +48,7 @@ decodeFunctionResult(functionFragment: 'createCampaign', data: BytesLike): Resul
 
   on<TCEvent extends TypedContractEvent>(event: TCEvent, listener: TypedListener<TCEvent>): Promise<this>
   on<TCEvent extends TypedContractEvent>(filter: TypedDeferredTopicFilter<TCEvent>, listener: TypedListener<TCEvent>): Promise<this>
-  
+
   once<TCEvent extends TypedContractEvent>(event: TCEvent, listener: TypedListener<TCEvent>): Promise<this>
   once<TCEvent extends TypedContractEvent>(filter: TypedDeferredTopicFilter<TCEvent>, listener: TypedListener<TCEvent>): Promise<this>
 
@@ -53,41 +59,65 @@ decodeFunctionResult(functionFragment: 'createCampaign', data: BytesLike): Resul
   removeAllListeners<TCEvent extends TypedContractEvent>(event?: TCEvent): Promise<this>
 
 
-    
-    
+
+
     attackWithdraw: TypedContractMethod<
-      [campaignId: BigNumberish, ],
+      [id: BigNumberish, ],
       [void],
       'nonpayable'
     >
-    
 
-    
+
+
     contribute: TypedContractMethod<
-      [campaignId: BigNumberish, ],
+      [id: BigNumberish, ],
       [void],
       'payable'
     >
-    
 
-    
+
+
     createCampaign: TypedContractMethod<
       [title: string, description: string, fundingGoal: BigNumberish, deadline: BigNumberish, ],
       [void],
       'nonpayable'
     >
-    
+
+
+
+    reentrancyBlocked: TypedContractMethod<
+      [],
+      [boolean],
+      'view'
+    >
+
+
+
+    rejectEther: TypedContractMethod<
+      [],
+      [boolean],
+      'view'
+    >
+
+
+
+    setRejectEther: TypedContractMethod<
+      [shouldReject: boolean, ],
+      [void],
+      'nonpayable'
+    >
+
 
 
     getFunction<T extends ContractMethod = ContractMethod>(key: string | FunctionFragment): T;
 
     getFunction(nameOrSignature: 'attackWithdraw'): TypedContractMethod<
-      [campaignId: BigNumberish, ],
+      [id: BigNumberish, ],
       [void],
       'nonpayable'
     >;
 getFunction(nameOrSignature: 'contribute'): TypedContractMethod<
-      [campaignId: BigNumberish, ],
+      [id: BigNumberish, ],
       [void],
       'payable'
     >;
@@ -96,10 +126,25 @@ getFunction(nameOrSignature: 'createCampaign'): TypedContractMethod<
       [void],
       'nonpayable'
     >;
+getFunction(nameOrSignature: 'reentrancyBlocked'): TypedContractMethod<
+      [],
+      [boolean],
+      'view'
+    >;
+getFunction(nameOrSignature: 'rejectEther'): TypedContractMethod<
+      [],
+      [boolean],
+      'view'
+    >;
+getFunction(nameOrSignature: 'setRejectEther'): TypedContractMethod<
+      [shouldReject: boolean, ],
+      [void],
+      'nonpayable'
+    >;
 
-    
+
 
     filters: {
-      
+
     };
   }

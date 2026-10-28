@@ -3,21 +3,22 @@
 /* eslint-disable */
 import type { BaseContract, BigNumberish, BytesLike, FunctionFragment, Result, Interface, EventFragment, AddressLike, ContractRunner, ContractMethod, Listener } from "ethers"
 import type { TypedContractEvent, TypedDeferredTopicFilter, TypedEventLog, TypedLogDescription, TypedListener, TypedContractMethod } from "./common.js"
-  
+
 export declare namespace ChainRaise {
-      
+
     export type CampaignStruct = {creator: AddressLike, title: string, description: string, fundingGoal: BigNumberish, amountRaised: BigNumberish, deadline: BigNumberish, withdrawn: boolean}
 
     export type CampaignStructOutput = [creator: string, title: string, description: string, fundingGoal: bigint, amountRaised: bigint, deadline: bigint, withdrawn: boolean] & {creator: string, title: string, description: string, fundingGoal: bigint, amountRaised: bigint, deadline: bigint, withdrawn: boolean }
-  
+
     }
 
   export interface ChainRaiseInterface extends Interface {
-    getFunction(nameOrSignature: "campaignCount" | "claimRefund" | "contribute" | "contributions" | "createCampaign" | "getCampaign" | "isSuccessful" | "refundClaimed" | "withdraw"): FunctionFragment;
+    getFunction(nameOrSignature: "campaignCount" | "campaignStatus" | "claimRefund" | "contribute" | "contributions" | "createCampaign" | "getCampaign" | "isSuccessful" | "refundClaimed" | "withdraw"): FunctionFragment;
 
     getEvent(nameOrSignatureOrTopic: "CampaignCreated" | "ContributionMade" | "FundsWithdrawn" | "RefundClaimed"): EventFragment;
 
     encodeFunctionData(functionFragment: 'campaignCount', values?: undefined): string;
+encodeFunctionData(functionFragment: 'campaignStatus', values: [BigNumberish]): string;
 encodeFunctionData(functionFragment: 'claimRefund', values: [BigNumberish]): string;
 encodeFunctionData(functionFragment: 'contribute', values: [BigNumberish]): string;
 encodeFunctionData(functionFragment: 'contributions', values: [BigNumberish, AddressLike]): string;
@@ -28,6 +29,7 @@ encodeFunctionData(functionFragment: 'refundClaimed', values: [BigNumberish, Add
 encodeFunctionData(functionFragment: 'withdraw', values: [BigNumberish]): string;
 
     decodeFunctionResult(functionFragment: 'campaignCount', data: BytesLike): Result;
+decodeFunctionResult(functionFragment: 'campaignStatus', data: BytesLike): Result;
 decodeFunctionResult(functionFragment: 'claimRefund', data: BytesLike): Result;
 decodeFunctionResult(functionFragment: 'contribute', data: BytesLike): Result;
 decodeFunctionResult(functionFragment: 'contributions', data: BytesLike): Result;
@@ -38,7 +40,7 @@ decodeFunctionResult(functionFragment: 'refundClaimed', data: BytesLike): Result
 decodeFunctionResult(functionFragment: 'withdraw', data: BytesLike): Result;
   }
 
-  
+
     export namespace CampaignCreatedEvent {
       export type InputTuple = [campaignId: BigNumberish, creator: AddressLike, title: string, fundingGoal: BigNumberish, deadline: BigNumberish];
       export type OutputTuple = [campaignId: bigint, creator: string, title: string, fundingGoal: bigint, deadline: bigint];
@@ -49,7 +51,7 @@ decodeFunctionResult(functionFragment: 'withdraw', data: BytesLike): Result;
       export type LogDescription = TypedLogDescription<Event>
     }
 
-  
+
 
     export namespace ContributionMadeEvent {
       export type InputTuple = [campaignId: BigNumberish, contributor: AddressLike, amount: BigNumberish];
@@ -61,7 +63,7 @@ decodeFunctionResult(functionFragment: 'withdraw', data: BytesLike): Result;
       export type LogDescription = TypedLogDescription<Event>
     }
 
-  
+
 
     export namespace FundsWithdrawnEvent {
       export type InputTuple = [campaignId: BigNumberish, creator: AddressLike, amount: BigNumberish];
@@ -73,7 +75,7 @@ decodeFunctionResult(functionFragment: 'withdraw', data: BytesLike): Result;
       export type LogDescription = TypedLogDescription<Event>
     }
 
-  
+
 
     export namespace RefundClaimedEvent {
       export type InputTuple = [campaignId: BigNumberish, contributor: AddressLike, amount: BigNumberish];
@@ -85,16 +87,16 @@ decodeFunctionResult(functionFragment: 'withdraw', data: BytesLike): Result;
       export type LogDescription = TypedLogDescription<Event>
     }
 
-  
+
 
   export interface ChainRaise extends BaseContract {
-    
+
     connect(runner?: ContractRunner | null): ChainRaise;
     waitForDeployment(): Promise<this>;
 
     interface: ChainRaiseInterface;
 
-    
+
   queryFilter<TCEvent extends TypedContractEvent>(
     event: TCEvent,
     fromBlockOrBlockhash?: string | number | undefined,
@@ -108,7 +110,7 @@ decodeFunctionResult(functionFragment: 'withdraw', data: BytesLike): Result;
 
   on<TCEvent extends TypedContractEvent>(event: TCEvent, listener: TypedListener<TCEvent>): Promise<this>
   on<TCEvent extends TypedContractEvent>(filter: TypedDeferredTopicFilter<TCEvent>, listener: TypedListener<TCEvent>): Promise<this>
-  
+
   once<TCEvent extends TypedContractEvent>(event: TCEvent, listener: TypedListener<TCEvent>): Promise<this>
   once<TCEvent extends TypedContractEvent>(filter: TypedDeferredTopicFilter<TCEvent>, listener: TypedListener<TCEvent>): Promise<this>
 
@@ -119,84 +121,97 @@ decodeFunctionResult(functionFragment: 'withdraw', data: BytesLike): Result;
   removeAllListeners<TCEvent extends TypedContractEvent>(event?: TCEvent): Promise<this>
 
 
-    
-    
+
+
     campaignCount: TypedContractMethod<
       [],
       [bigint],
       'view'
     >
-    
 
-    
+
+
+    campaignStatus: TypedContractMethod<
+      [campaignId: BigNumberish, ],
+      [bigint],
+      'view'
+    >
+
+
+
     claimRefund: TypedContractMethod<
       [campaignId: BigNumberish, ],
       [void],
       'nonpayable'
     >
-    
 
-    
+
+
     contribute: TypedContractMethod<
       [campaignId: BigNumberish, ],
       [void],
       'payable'
     >
-    
 
-    
+
+
     contributions: TypedContractMethod<
       [campaignId: BigNumberish, contributor: AddressLike, ],
       [bigint],
       'view'
     >
-    
 
-    
+
+
     createCampaign: TypedContractMethod<
       [title: string, description: string, fundingGoal: BigNumberish, deadline: BigNumberish, ],
       [bigint],
       'nonpayable'
     >
-    
 
-    
+
+
     getCampaign: TypedContractMethod<
       [campaignId: BigNumberish, ],
       [ChainRaise.CampaignStructOutput],
       'view'
     >
-    
 
-    
+
+
     isSuccessful: TypedContractMethod<
       [campaignId: BigNumberish, ],
       [boolean],
       'view'
     >
-    
 
-    
+
+
     refundClaimed: TypedContractMethod<
       [campaignId: BigNumberish, contributor: AddressLike, ],
       [boolean],
       'view'
     >
-    
 
-    
+
+
     withdraw: TypedContractMethod<
       [campaignId: BigNumberish, ],
       [void],
       'nonpayable'
     >
-    
+
 
 
     getFunction<T extends ContractMethod = ContractMethod>(key: string | FunctionFragment): T;
 
     getFunction(nameOrSignature: 'campaignCount'): TypedContractMethod<
       [],
+      [bigint],
+      'view'
+    >;
+getFunction(nameOrSignature: 'campaignStatus'): TypedContractMethod<
+      [campaignId: BigNumberish, ],
       [bigint],
       'view'
     >;
@@ -247,21 +262,21 @@ getEvent(key: 'FundsWithdrawn'): TypedContractEvent<FundsWithdrawnEvent.InputTup
 getEvent(key: 'RefundClaimed'): TypedContractEvent<RefundClaimedEvent.InputTuple, RefundClaimedEvent.OutputTuple, RefundClaimedEvent.OutputObject>;
 
     filters: {
-      
+
       'CampaignCreated(uint256,address,string,uint256,uint256)': TypedContractEvent<CampaignCreatedEvent.InputTuple, CampaignCreatedEvent.OutputTuple, CampaignCreatedEvent.OutputObject>;
       CampaignCreated: TypedContractEvent<CampaignCreatedEvent.InputTuple, CampaignCreatedEvent.OutputTuple, CampaignCreatedEvent.OutputObject>;
-    
+
 
       'ContributionMade(uint256,address,uint256)': TypedContractEvent<ContributionMadeEvent.InputTuple, ContributionMadeEvent.OutputTuple, ContributionMadeEvent.OutputObject>;
       ContributionMade: TypedContractEvent<ContributionMadeEvent.InputTuple, ContributionMadeEvent.OutputTuple, ContributionMadeEvent.OutputObject>;
-    
+
 
       'FundsWithdrawn(uint256,address,uint256)': TypedContractEvent<FundsWithdrawnEvent.InputTuple, FundsWithdrawnEvent.OutputTuple, FundsWithdrawnEvent.OutputObject>;
       FundsWithdrawn: TypedContractEvent<FundsWithdrawnEvent.InputTuple, FundsWithdrawnEvent.OutputTuple, FundsWithdrawnEvent.OutputObject>;
-    
+
 
       'RefundClaimed(uint256,address,uint256)': TypedContractEvent<RefundClaimedEvent.InputTuple, RefundClaimedEvent.OutputTuple, RefundClaimedEvent.OutputObject>;
       RefundClaimed: TypedContractEvent<RefundClaimedEvent.InputTuple, RefundClaimedEvent.OutputTuple, RefundClaimedEvent.OutputObject>;
-    
+
     };
   }
