@@ -4,7 +4,7 @@ ChainRaise is a university demonstration project for transparent, blockchain-bas
 
 ## Project status
 
-The project includes the ChainRaise frontend screens and a local Hardhat crowdfunding contract with automated tests. Campaign screens read from the configured contract. No contract has been deployed by this project setup.
+The project includes the ChainRaise frontend screens, MetaMask integration, and a local Hardhat crowdfunding contract with automated tests. Campaign screens read from the configured contract. A local deployment record is included for development; it only works while its matching Hardhat node is running.
 
 ## Setup
 
@@ -47,7 +47,9 @@ The Next.js App Router application is in `src/app`; shared UI is in `src/compone
 
 ## Smart contract development
 
-Hardhat 3 is configured in `hardhat.config.ts` with Solidity 0.8.28 and the Mocha/ethers toolbox. It reads Solidity sources from `contracts/`, tests from `test/`, and scripts from `scripts/`.
+Hardhat 3 is configured in `hardhat.config.ts` with Solidity 0.8.28 and the Mocha/ethers toolbox. It reads Solidity sources from `contracts/`, tests from `test/`, and local deployment modules from `ignition/`. `ChainRaise.sol` supports fixed ETH goals and deadlines, capped contributions, creator withdrawals after successful completion, and individual refunds after failed completion. `getCampaignStatus` reports Active until the deadline, then Successful or Failed based on the final amount raised.
+
+Contributions that would take a campaign above its goal are rejected. Success and failure are evaluated at or after the deadline. Refunds are claimed individually, so the contract never loops over its contributors. Withdrawals and refunds update claim state before sending ETH and use a reentrancy guard.
 
 ```bash
 npm run compile
@@ -55,6 +57,7 @@ npm run test:contracts
 ```
 
 The campaign contract is `contracts/ChainRaise.sol`. Hardhat writes its JSON artifact, including the ABI, to `artifacts/contracts/ChainRaise.sol/ChainRaise.json` after compilation. The generated TypeChain bindings are under `types/ethers-contracts/`.
+The contract tests cover campaign creation and validation, contribution timing and caps, exact deadline outcomes, per-campaign accounting, withdrawals, refunds, invalid identifiers, reentrant calls, and rejected ETH transfers. They do not constitute a professional audit or formal verification.
 
 The production build uses Next.js's webpack backend (`next build --webpack`) because Turbopack's worker process exits unexpectedly in the current Windows development environment.
 
