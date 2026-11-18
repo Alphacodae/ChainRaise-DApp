@@ -3,14 +3,16 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "hardhat compile && next dev",
-    "build": "hardhat compile && next build --webpack",
+    "dev": "next dev",
+    "build": "next build --webpack",
+    "build:all": "hardhat compile && next build --webpack",
     "start": "next start",
     "lint": "eslint",
     "compile": "hardhat compile",
     "test:contracts": "hardhat test",
     "node:local": "hardhat node",
-    "deploy:local": "hardhat ignition deploy ignition/modules/ChainRaise.ts --network localhost"
+    "deploy:local": "hardhat ignition deploy ignition/modules/ChainRaise.ts --network localhost",
+    "deploy:sepolia": "hardhat ignition deploy ignition/modules/ChainRaise.ts --network sepolia"
   },
   "dependencies": {
     "ethers": "^6.17.0",
@@ -19,6 +21,7 @@
     "react-dom": "19.3.0"
   },
   "devDependencies": {
+    "@nomicfoundation/edr-win32-x64-msvc": "^0.25.1",
     "@nomicfoundation/hardhat-toolbox-mocha-ethers": "^4.0.0",
     "@tailwindcss/turbopack": "^4",
     "@types/mocha": "^10.0.10",

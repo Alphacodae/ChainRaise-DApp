@@ -3,12 +3,12 @@
 /* eslint-disable */
 import type { BaseContract, BigNumberish, BytesLike, FunctionFragment, Result, Interface, ContractRunner, ContractMethod, Listener } from "ethers"
 import type { TypedContractEvent, TypedDeferredTopicFilter, TypedEventLog, TypedListener, TypedContractMethod } from "../common.js"
-
+  
 
   export interface IChainRaiseInterface extends Interface {
     getFunction(nameOrSignature: "contribute" | "createCampaign" | "withdraw"): FunctionFragment;
 
-
+    
 
     encodeFunctionData(functionFragment: 'contribute', values: [BigNumberish]): string;
 encodeFunctionData(functionFragment: 'createCampaign', values: [string, string, BigNumberish, BigNumberish]): string;
@@ -19,16 +19,16 @@ decodeFunctionResult(functionFragment: 'createCampaign', data: BytesLike): Resul
 decodeFunctionResult(functionFragment: 'withdraw', data: BytesLike): Result;
   }
 
-
+  
 
   export interface IChainRaise extends BaseContract {
-
+    
     connect(runner?: ContractRunner | null): IChainRaise;
     waitForDeployment(): Promise<this>;
 
     interface: IChainRaiseInterface;
 
-
+    
   queryFilter<TCEvent extends TypedContractEvent>(
     event: TCEvent,
     fromBlockOrBlockhash?: string | number | undefined,
@@ -42,7 +42,7 @@ decodeFunctionResult(functionFragment: 'withdraw', data: BytesLike): Result;
 
   on<TCEvent extends TypedContractEvent>(event: TCEvent, listener: TypedListener<TCEvent>): Promise<this>
   on<TCEvent extends TypedContractEvent>(filter: TypedDeferredTopicFilter<TCEvent>, listener: TypedListener<TCEvent>): Promise<this>
-
+  
   once<TCEvent extends TypedContractEvent>(event: TCEvent, listener: TypedListener<TCEvent>): Promise<this>
   once<TCEvent extends TypedContractEvent>(filter: TypedDeferredTopicFilter<TCEvent>, listener: TypedListener<TCEvent>): Promise<this>
 
@@ -53,30 +53,30 @@ decodeFunctionResult(functionFragment: 'withdraw', data: BytesLike): Result;
   removeAllListeners<TCEvent extends TypedContractEvent>(event?: TCEvent): Promise<this>
 
 
-
-
+    
+    
     contribute: TypedContractMethod<
       [campaignId: BigNumberish, ],
       [void],
       'payable'
     >
+    
 
-
-
+    
     createCampaign: TypedContractMethod<
       [title: string, description: string, fundingGoal: BigNumberish, deadline: BigNumberish, ],
       [bigint],
       'nonpayable'
     >
+    
 
-
-
+    
     withdraw: TypedContractMethod<
       [campaignId: BigNumberish, ],
       [void],
       'nonpayable'
     >
-
+    
 
 
     getFunction<T extends ContractMethod = ContractMethod>(key: string | FunctionFragment): T;
@@ -97,9 +97,9 @@ getFunction(nameOrSignature: 'withdraw'): TypedContractMethod<
       'nonpayable'
     >;
 
-
+    
 
     filters: {
-
+      
     };
   }

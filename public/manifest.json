@@ -1,0 +1,56 @@
+{
+  "name": "ChainRaise - Transparent Web3 Crowdfunding",
+  "short_name": "ChainRaise",
+  "description": "Empowering ideas through transparent, secure and trustless fundraising.",
+  "start_url": "/",
+  "id": "/",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#0e0d13",
+  "theme_color": "#141319",
+  "orientation": "portrait-primary",
+  "categories": ["finance", "utilities"],
+  "icons": [
+    {
+      "src": "/icons/icon-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/icons/icon-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/icons/icon-maskable-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Explore Campaigns",
+      "short_name": "Explore",
+      "description": "Discover live crowdfunding campaigns",
+      "url": "/explore",
+      "icons": [{ "src": "/icons/icon-192x192.png", "sizes": "192x192" }]
+    },
+    {
+      "name": "Launch Campaign",
+      "short_name": "Create",
+      "description": "Start a new fundraising campaign",
+      "url": "/create",
+      "icons": [{ "src": "/icons/icon-192x192.png", "sizes": "192x192" }]
+    },
+    {
+      "name": "Dashboard",
+      "short_name": "Dashboard",
+      "description": "View your campaigns and contributions",
+      "url": "/dashboard",
+      "icons": [{ "src": "/icons/icon-192x192.png", "sizes": "192x192" }]
+    }
+  ]
+}

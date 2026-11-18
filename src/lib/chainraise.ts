@@ -1,5 +1,5 @@
 import { Contract, JsonRpcProvider, isAddress } from "ethers";
-import artifact from "../../artifacts/contracts/ChainRaise.sol/ChainRaise.json";
+import artifact from "@/config/ChainRaiseAbi.json";
 
 export const CAMPAIGN_STATUS = { Active: 0, Successful: 1, Failed: 2 } as const;
 export type CampaignStatus = "Active" | "Successful" | "Failed";
@@ -20,8 +20,16 @@ const configuredChainId = Number(process.env.NEXT_PUBLIC_CHAINRAISE_CHAIN_ID || 
 
 export const chainConfig = {
   chainId: configuredChainId,
-  rpcUrl: process.env.NEXT_PUBLIC_CHAINRAISE_RPC_URL?.trim() || (configuredChainId === 31337 ? "http://127.0.0.1:8545" : ""),
-  address: process.env.NEXT_PUBLIC_CHAINRAISE_CONTRACT_ADDRESS?.trim() || "",
+  rpcUrl:
+    process.env.NEXT_PUBLIC_CHAINRAISE_RPC_URL?.trim() ||
+    (configuredChainId === 11155111
+      ? "https://ethereum-sepolia-rpc.publicnode.com"
+      : "http://127.0.0.1:8545"),
+  address:
+    process.env.NEXT_PUBLIC_CHAINRAISE_CONTRACT_ADDRESS?.trim() ||
+    (configuredChainId === 11155111
+      ? "0x5d272596cc8c1F7DA12F8862E98C2Ee2C1029CEa"
+      : ""),
 };
 
 export function assertSupportedChain() {
