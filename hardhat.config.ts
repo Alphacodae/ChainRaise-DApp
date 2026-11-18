@@ -10,4 +10,11 @@ export default defineConfig({
     cache: "./cache",
     artifacts: "./artifacts",
   },
+  networks: {
+    localhost: {
+      type: "http",
+      url: process.env.NEXT_PUBLIC_CHAINRAISE_RPC_URL ?? "http://127.0.0.1:8545",
+      chainId: 31337,
+    },
+  },
 });

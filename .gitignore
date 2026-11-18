@@ -13,11 +13,13 @@
 /artifacts/
 /cache/
 /typechain-types/
+/types/ethers-contracts/
 /coverage/
 /.local-appdata/
 
 # deployment output and local secrets
 /.env*
+/.env.local
 !/.env.example
 /.vercel
 /.turbo/

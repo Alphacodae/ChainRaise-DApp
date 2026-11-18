@@ -1,8 +1,13 @@
+import { Suspense } from "react";
 import AppShell from "@/components/app-shell";
-import { demoCampaigns } from "@/lib/demo-data";
 
-export function generateStaticParams() {
-  return demoCampaigns.map(({ id }) => ({ id }));
+type CampaignParams = { params: Promise<{ id: string }> };
+
+export default function Page({ params }: CampaignParams) {
+  return <Suspense fallback={<div className="empty">Loading campaign…</div>}><CampaignPage params={params} /></Suspense>;
 }
 
-export default async function Page({ params }: { params: Promise<{ id: string }> }) { const { id } = await params; return <AppShell page="detail" campaignId={id} />; }
+async function CampaignPage({ params }: CampaignParams) {
+  const { id } = await params;
+  return <AppShell page="detail" campaignId={id} />;
+}
