@@ -3,12 +3,12 @@
 /* eslint-disable */
 import type { BaseContract, BigNumberish, BytesLike, FunctionFragment, Result, Interface, ContractRunner, ContractMethod, Listener } from "ethers"
 import type { TypedContractEvent, TypedDeferredTopicFilter, TypedEventLog, TypedListener, TypedContractMethod } from "../common.js"
-
+  
 
   export interface ReentrantReceiverInterface extends Interface {
     getFunction(nameOrSignature: "attackWithdraw" | "contribute" | "createCampaign" | "reentrancyBlocked" | "rejectEther" | "setRejectEther"): FunctionFragment;
 
-
+    
 
     encodeFunctionData(functionFragment: 'attackWithdraw', values: [BigNumberish]): string;
 encodeFunctionData(functionFragment: 'contribute', values: [BigNumberish]): string;
@@ -25,16 +25,16 @@ decodeFunctionResult(functionFragment: 'rejectEther', data: BytesLike): Result;
 decodeFunctionResult(functionFragment: 'setRejectEther', data: BytesLike): Result;
   }
 
-
+  
 
   export interface ReentrantReceiver extends BaseContract {
-
+    
     connect(runner?: ContractRunner | null): ReentrantReceiver;
     waitForDeployment(): Promise<this>;
 
     interface: ReentrantReceiverInterface;
 
-
+    
   queryFilter<TCEvent extends TypedContractEvent>(
     event: TCEvent,
     fromBlockOrBlockhash?: string | number | undefined,
@@ -48,7 +48,7 @@ decodeFunctionResult(functionFragment: 'setRejectEther', data: BytesLike): Resul
 
   on<TCEvent extends TypedContractEvent>(event: TCEvent, listener: TypedListener<TCEvent>): Promise<this>
   on<TCEvent extends TypedContractEvent>(filter: TypedDeferredTopicFilter<TCEvent>, listener: TypedListener<TCEvent>): Promise<this>
-
+  
   once<TCEvent extends TypedContractEvent>(event: TCEvent, listener: TypedListener<TCEvent>): Promise<this>
   once<TCEvent extends TypedContractEvent>(filter: TypedDeferredTopicFilter<TCEvent>, listener: TypedListener<TCEvent>): Promise<this>
 
@@ -59,54 +59,54 @@ decodeFunctionResult(functionFragment: 'setRejectEther', data: BytesLike): Resul
   removeAllListeners<TCEvent extends TypedContractEvent>(event?: TCEvent): Promise<this>
 
 
-
-
+    
+    
     attackWithdraw: TypedContractMethod<
       [id: BigNumberish, ],
       [void],
       'nonpayable'
     >
+    
 
-
-
+    
     contribute: TypedContractMethod<
       [id: BigNumberish, ],
       [void],
       'payable'
     >
+    
 
-
-
+    
     createCampaign: TypedContractMethod<
       [title: string, description: string, fundingGoal: BigNumberish, deadline: BigNumberish, ],
       [void],
       'nonpayable'
     >
+    
 
-
-
+    
     reentrancyBlocked: TypedContractMethod<
       [],
       [boolean],
       'view'
     >
+    
 
-
-
+    
     rejectEther: TypedContractMethod<
       [],
       [boolean],
       'view'
     >
+    
 
-
-
+    
     setRejectEther: TypedContractMethod<
       [shouldReject: boolean, ],
       [void],
       'nonpayable'
     >
-
+    
 
 
     getFunction<T extends ContractMethod = ContractMethod>(key: string | FunctionFragment): T;
@@ -142,9 +142,9 @@ getFunction(nameOrSignature: 'setRejectEther'): TypedContractMethod<
       'nonpayable'
     >;
 
-
+    
 
     filters: {
-
+      
     };
   }

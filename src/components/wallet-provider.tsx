@@ -2,7 +2,7 @@
 
 import { BrowserProvider, Contract, type Eip1193Provider } from "ethers";
 import { createContext, useCallback, useContext, useEffect, useMemo, useState } from "react";
-import artifact from "../../artifacts/contracts/ChainRaise.sol/ChainRaise.json";
+import artifact from "@/config/ChainRaiseAbi.json";
 import { assertSupportedChain, chainConfig, getContractAddress, getRpcUrl } from "@/lib/chainraise";
 
 type InjectedEthereum = Eip1193Provider & {
@@ -33,7 +33,14 @@ export function WalletProvider({ children }: { children: React.ReactNode }) {
 
   const syncWallet = useCallback(async (requestAccounts: boolean) => {
     const ethereum = window.ethereum;
-    if (!ethereum) throw new Error("MetaMask was not detected. Install its browser extension to connect.");
+    if (!ethereum) {
+      const isMobile = typeof navigator !== "undefined" && /android|iphone|ipad|ipod/i.test(navigator.userAgent);
+      throw new Error(
+        isMobile
+          ? "MetaMask not detected in this browser. Please open in MetaMask Mobile app via the Wallet tab."
+          : "MetaMask was not detected. Install the MetaMask extension to connect."
+      );
+    }
     const [accounts, chainHexValue] = await Promise.all([
       ethereum.request({ method: requestAccounts ? "eth_requestAccounts" : "eth_accounts" }) as Promise<string[]>,
       ethereum.request({ method: "eth_chainId" }) as Promise<string>,
